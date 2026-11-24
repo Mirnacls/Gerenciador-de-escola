@@ -1,0 +1,124 @@
+﻿using Gerenciador_de_Escola._02___Servico;
+
+namespace Gerenciador_de_Escola;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        string opcao;
+        ServicoAlunos servicoAlunos = new ServicoAlunos();
+
+        do
+        {
+            Console.WriteLine("=== MENU ===");
+            Console.WriteLine("1 - Cadastrar Aluno");
+            Console.WriteLine("2 - Consultar Aluno");
+            Console.WriteLine("3 - Deletar Aluno");
+            Console.WriteLine("4 - Sair");
+            Console.Write("\nEscolha uma opção: ");
+
+            opcao = Console.ReadLine();
+
+            switch (opcao)
+            {
+                case "1":
+                    AdicionarAluno();
+                    break;
+                case "2":
+                    ConsultarAluno();
+                    break;
+                case "3":
+                    DeletarAluno();
+                    break;
+                case "4":
+                    Console.WriteLine("\nSaindo do programa...");
+                    Console.Clear();
+                    break;
+                default:
+                    Console.WriteLine("\nOpção inválida! Pressione ENTER para tentar novamente.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
+            }
+        } while (opcao != "4");
+
+        void AdicionarAluno()
+        {
+            try
+            {
+                Console.WriteLine("Digite o nome do aluno: ");
+                string nome = Console.ReadLine();
+
+                Console.WriteLine("Digite o email do aluno: ");
+                string email = Console.ReadLine();
+
+                Console.WriteLine("Digite o telefone do aluno: ");
+                string telefone = Console.ReadLine();
+
+                Console.WriteLine("Digite a cpf do aluno: ");
+                string cpf = Console.ReadLine();
+
+                Console.WriteLine("Digite o Curso: ");
+                string curso = Console.ReadLine();
+
+                Console.WriteLine("Digite a matrícula do aluno: ");
+                int matricula = int.Parse(Console.ReadLine());
+
+                string msgRetorno = servicoAlunos.Adicionar(nome, email, telefone, cpf, curso, matricula);
+
+                Console.WriteLine(msgRetorno);
+            }
+            catch (FormatException erro)
+            {
+                Console.WriteLine("O valor digitado não é um número");
+                Console.WriteLine(erro.Message);
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("A matrícula digitada está fora do intervalo permitido.");
+            }
+        }
+
+        void ConsultarAluno()
+        {
+            try
+            {
+                Console.WriteLine("Digite a matrícula do aluno: ");
+                int matricula = int.Parse(Console.ReadLine());
+
+                string msgRetorno = servicoAlunos.Consultar(matricula);
+
+                Console.WriteLine(msgRetorno);
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Digite um número inteiro para a matrícula.");
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("A matrícula digitada está fora do intervalo permitido.");
+            }
+        }
+
+        void DeletarAluno()
+        {
+            try
+            {
+                Console.WriteLine("Digite a matrícula do aluno: ");
+                int matricula = int.Parse(Console.ReadLine());
+
+                string msgRetorno = servicoAlunos.Deletar(matricula);
+                Console.WriteLine(msgRetorno);
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Digite um número inteiro para a matrícula.");
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("A matrícula digitada está fora do intervalo permitido.");
+            }
+        }
+    }
+}
